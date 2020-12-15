@@ -1,9 +1,9 @@
 import pygame as pg
-
+from random import randint
 BLACK = (0, 0, 0)
 
 
-class Paddle(pg.sprite.Sprite):
+class Ball(pg.sprite.Sprite):
 
     def __init__(self, color, width, height):
         super().__init__()
@@ -14,14 +14,14 @@ class Paddle(pg.sprite.Sprite):
 
         pg.draw.rect(self.image, color, [0, 0, width, height])
 
+        self.velocity = [randint(4, 8), randint(-8, 8)]
+
         self.rect = self.image.get_rect()
 
-    def moveUp(self, pixels):
-        self.rect.y -= pixels
-        if self.rect.y < 0:
-            self.rect.y = 0
+    def update(self):
+        self.rect.x += self.velocity[0]
+        self.rect.y += self.velocity[1]
 
-    def moveDown(self, pixels):
-        self.rect.y += pixels
-        if self.rect.y > 400:
-            self.rect.y = 400
+    def bounce(self):
+        self.velocity[0] = -self.velocity[0]
+        self.velocity[1] = randint(-8, 8)
